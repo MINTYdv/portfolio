@@ -8,7 +8,7 @@ import { ChatRequestError, streamChatReply } from "@/lib/chat/streamChatReply";
 import { MIN_SEND_INTERVAL_MS } from "@/lib/chat/constants";
 import { resolveNoteById } from "@/lib/content/resolveNote";
 import { CHAT_ERROR_MESSAGES } from "@/lib/i18n/chatErrorMessages";
-import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { detectLanguage } from "@/lib/i18n/detectLanguage";
 import type { ChatMessage, MessageAttachment } from "@/types/message";
 import type { NoteContent } from "@/types/note";
 import { HelloSuggestion } from "./HelloSuggestion";
@@ -24,7 +24,7 @@ const RATE_LIMIT_STATUS = 429;
 const WELCOME_MESSAGE: ChatMessage = {
   id: "welcome",
   role: "assistant",
-  text: "Hi! I'm Lenny's AI assistant. Say hello, or ask me about his projects, skills, or experience.",
+  text: "Hey! It's Lenny 👋 Ask me about my projects, skills, or experience — or just say hi!",
 };
 
 interface MessagesAppProps {
@@ -42,7 +42,6 @@ function toAIHistory(chatMessages: ChatMessage[]): AITurn[] {
 }
 
 export function MessagesApp({ onOpenNote }: MessagesAppProps) {
-  const { language } = useLanguage();
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
   const [isTyping, setIsTyping] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -110,7 +109,7 @@ export function MessagesApp({ onOpenNote }: MessagesAppProps) {
       actions.forEach(applyAction);
     } catch (error) {
       setIsTyping(false);
-      const messages_ = CHAT_ERROR_MESSAGES[language];
+      const messages_ = CHAT_ERROR_MESSAGES[detectLanguage(text)];
       let errorText = messages_.generic;
       if (error instanceof ChatRequestError && error.status === RATE_LIMIT_STATUS) {
         // "client" = our own rate limiter rejected the request (resets in ~1 min).

@@ -21,7 +21,7 @@ export const projects: Project[] = [
     challenges:
       "Designing an image-tagging UX that stays fast on lower-end phones while keeping the underlying data model flexible.",
     results: "Placeholder — real results and metrics to be added.",
-    githubUrl: "https://github.com/lennymurte/copapp",
+    githubUrl: "https://github.com/MINTYdv/copapp",
   },
   {
     id: "portfolio",
@@ -41,6 +41,6 @@ export const projects: Project[] = [
     technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
     challenges: "Recreating iOS interaction fidelity — timing, spacing, animations — using only web technologies.",
     results: "Placeholder — to be updated once the project is complete.",
-    githubUrl: "https://github.com/lennymurte/murte-portfolio",
+    githubUrl: "https://github.com/MINTYdv/portfolio",
   },
 ];

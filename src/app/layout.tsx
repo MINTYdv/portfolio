@@ -35,6 +35,9 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: "#ffffff",
+  // Ask supporting browsers to resize the layout viewport (not overlay it)
+  // when the on-screen keyboard opens, so the header stays visible above it.
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

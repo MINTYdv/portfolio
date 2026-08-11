@@ -9,5 +9,5 @@ export const profile: Profile = {
   avatarUrl: null,
   avatarInitials: "LM",
   resumeUrl: "/Lenny_MURTE_resume.pdf",
-  githubUrl: "https://github.com/lennymurte",
+  githubUrl: "https://github.com/MINTYdv",
 };

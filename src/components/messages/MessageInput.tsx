@@ -81,7 +81,8 @@ export function MessageInput({ onSend, disabled }: MessageInputProps) {
           placeholder="Message"
           aria-label="Message"
           maxLength={MAX_MESSAGE_LENGTH}
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-black placeholder:text-zinc-400 focus:outline-none"
+          // 16px minimum — below this, iOS Safari/Chrome force a page zoom on focus.
+          className="min-w-0 flex-1 bg-transparent text-[16px] text-black placeholder:text-zinc-400 focus:outline-none"
         />
         {hasText ? (
           <button

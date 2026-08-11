@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Loader } from "@/components/common/Loader";
 import { IphoneFrame } from "@/components/iphone/IphoneFrame";
 import { PhoneContent } from "@/components/iphone/PhoneContent";
-import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 
 const LOADER_DURATION_MS = 1400;
 
@@ -17,7 +16,7 @@ export default function Home() {
   }, []);
 
   return (
-    <LanguageProvider>
+    <>
       <Loader visible={showLoader} />
       <div
         className={`transition-opacity duration-700 ease-out ${
@@ -28,6 +27,6 @@ export default function Home() {
           <PhoneContent />
         </IphoneFrame>
       </div>
-    </LanguageProvider>
+    </>
   );
 }
