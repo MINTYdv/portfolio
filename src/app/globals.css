@@ -67,9 +67,14 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  /* Reduce actual movement (translate/scale) — bubble entrance, typing dots,
+     Messages/Notes slide — but keep simple opacity crossfades (loader, hello
+     suggestion rotation) smooth: they don't involve motion and are not what
+     prefers-reduced-motion is meant to suppress. */
+  .msg-enter,
+  .typing-dot,
+  .animate-fade-in,
+  .slide-transition {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

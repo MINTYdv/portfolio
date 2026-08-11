@@ -8,7 +8,8 @@ import type { NoteContent } from "@/types/note";
 
 type View = "messages" | "notes";
 
-const TRANSITION_CLASSES = "absolute inset-0 flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
+const TRANSITION_CLASSES =
+  "slide-transition absolute inset-0 flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]";
 
 export function PhoneContent() {
   const [view, setView] = useState<View>("messages");
