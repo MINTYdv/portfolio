@@ -29,7 +29,7 @@ function GitHubIcon() {
 
 export function MessageHeader() {
   return (
-    <div className="relative flex flex-col items-center gap-0.5 border-b border-zinc-200 px-4 pb-2 pt-1">
+    <div className="sticky top-0 z-10 flex flex-col items-center gap-0.5 border-b border-zinc-200 bg-white px-4 pb-2 pt-1">
       <div className="absolute right-2 top-1 flex items-center gap-0.5">
         {profile.resumeUrl ? (
           <a

@@ -33,6 +33,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // This is a fixed-layout app meant to feel like a native iPhone screen, not
+  // a zoomable page — lock the viewport so focusing the input can't trigger
+  // the mobile browser's auto-zoom (the "buggy zoom" users were hitting).
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: "cover",
   themeColor: "#ffffff",
   // Ask supporting browsers to resize the layout viewport (not overlay it)

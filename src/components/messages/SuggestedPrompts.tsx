@@ -9,6 +9,7 @@ interface SuggestedPromptsProps {
 }
 
 const SCROLL_STEP_PX = 150;
+const EASE_FACTOR = 0.18;
 
 function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -26,6 +27,8 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
 
 export function SuggestedPrompts({ onSelect, disabled }: SuggestedPromptsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
 
@@ -47,17 +50,53 @@ export function SuggestedPrompts({ onSelect, disabled }: SuggestedPromptsProps) 
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Ease toward a (possibly moving) target instead of one native smooth-scroll
+  // jump — handles rapid successive clicks/wheel ticks smoothly, and isn't at
+  // the mercy of the browser's own scroll-behavior handling.
+  const easeTowardTarget = (rawTarget: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    targetRef.current = Math.max(0, Math.min(rawTarget, el.scrollWidth - el.clientWidth));
+
+    if (rafRef.current) return;
+
+    const tick = () => {
+      const node = scrollRef.current;
+      if (!node || targetRef.current === null) {
+        rafRef.current = null;
+        return;
+      }
+      const diff = targetRef.current - node.scrollLeft;
+      if (Math.abs(diff) < 0.5) {
+        node.scrollLeft = targetRef.current;
+        targetRef.current = null;
+        rafRef.current = null;
+        return;
+      }
+      node.scrollLeft += diff * EASE_FACTOR;
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  };
+
+  const currentTarget = () => targetRef.current ?? scrollRef.current?.scrollLeft ?? 0;
+
   const scrollByStep = (direction: -1 | 1) => {
-    scrollRef.current?.scrollBy({ left: direction * SCROLL_STEP_PX, behavior: "smooth" });
+    easeTowardTarget(currentTarget() + direction * SCROLL_STEP_PX);
   };
 
   // Let a plain vertical mouse wheel scroll this row horizontally — the
   // natural gesture on desktop, where there's no touch/trackpad swipe.
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    const el = scrollRef.current;
-    if (!el || event.deltaY === 0 || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    if (event.deltaY === 0 || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     event.preventDefault();
-    el.scrollLeft += event.deltaY;
+    easeTowardTarget(currentTarget() + event.deltaY);
   };
 
   return (
