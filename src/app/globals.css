@@ -13,10 +13,18 @@
   --font-sans: var(--font-sans);
 }
 
+html {
+  /* Prevent iOS from silently rescaling text (a contributor to focus-zoom
+     glitches) independently of the viewport lock in layout.tsx. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  touch-action: manipulation;
 }
 
 @keyframes fade-in {
